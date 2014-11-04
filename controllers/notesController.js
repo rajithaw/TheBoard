@@ -27,7 +27,7 @@
                 var noteToInsert = {
                     note: req.body.note,
                     color: req.body.color,
-                    author: "Shawn Wildermuth"
+                    author: req.user.name
                 };
 
                 data.addNote(categoryName, noteToInsert, function (err) {
