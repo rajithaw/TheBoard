@@ -25,6 +25,10 @@ app.use(flash());
 // set the public static resource folder
 app.use(express.static(__dirname + "/public"));
 
+// use authentication
+var auth = require("./auth");
+auth.init(app);
+
 // Map the routs
 controllers.init(app);
 
@@ -36,3 +40,6 @@ app.get("/api/users", function (req, res) {
 var server = http.createServer(app);
 
 server.listen(3000);
+
+var updater = require("./updater");
+updater.init(server);

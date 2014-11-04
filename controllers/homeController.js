@@ -1,6 +1,7 @@
 ﻿(function(homeController) {
 
     var data = require("../data");
+    var auth = require("../auth");
 
     homeController.init = function(app) {
 
@@ -10,15 +11,18 @@
                     title: "The Board",
                     error: err,
                     categories: results,
-                    newCatError: req.flash("newCatName")
+                    newCatError: req.flash("newCatName"),
+                    user: req.user
                 });
             });
         });
 
-        app.get("/notes/:categoryName", function(req, res) {
-            var categoryName = req.params.categoryName;
-            res.render("notes", { title: categoryName });
-        });
+        app.get("/notes/:categoryName", 
+            auth.ensureAuthenticated,
+            function (req, res) {
+                var categoryName = req.params.categoryName;
+                res.render("notes", { title: categoryName, user: req.user });
+            });
 
         app.post("/newCategory", function(req, res) {
             var categoryName = req.body.categoryName;
